@@ -19,7 +19,9 @@ RCT_EXPORT_MODULE()
   };
   } else {
       // Fallback on earlier versions
-      return @(NO);
+      return @{
+          @"isAvailable": @(NO)
+};
   }
 }
 
@@ -33,10 +35,18 @@ RCT_EXPORT_METHOD(requestReview:
          UIWindowScene *scene = [self findActiveScene];
          if (scene) {
              [SKStoreReviewController requestReviewInScene:scene];
+             resolve(@"true");
+         }else{
+             resolve(@"false");
          }
      } else if (@available(iOS 10.3, *)) {
          [SKStoreReviewController requestReview];
+         resolve(@"true");
+     }else{
+         resolve(@"false");
      }
+    
+    
 }
 
 - (UIWindowScene *) findActiveScene  API_AVAILABLE(ios(13.0)){
