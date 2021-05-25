@@ -13,9 +13,14 @@ RCT_EXPORT_MODULE()
 
 - (NSDictionary *)constantsToExport
 {
-  return @{
-    @"isAvailable": [SKStoreReviewController class] ? @(YES) : @(NO)
+    if (@available(iOS 10.3, *)) {
+        return @{
+            @"isAvailable": [SKStoreReviewController class] ? @(YES) : @(NO)
   };
+  } else {
+      // Fallback on earlier versions
+      return @(NO)
+  }
 }
 
 RCT_EXPORT_METHOD(requestReview:
@@ -25,22 +30,12 @@ RCT_EXPORT_METHOD(requestReview:
   
   
   if (@available(iOS 14, *)) {
-         [self logMessage:@"iOS 14+"];
          UIWindowScene *scene = [self findActiveScene];
          if (scene) {
-             [self logMessage:@"scene found"];
              [SKStoreReviewController requestReviewInScene:scene];
-             result(nil);
-         } else {
-             [self logMessage:@"scene not found"];
-           result(nil);
          }
      } else if (@available(iOS 10.3, *)) {
-         [self logMessage:@"iOS 10.3+"];
          [SKStoreReviewController requestReview];
-         result(nil);
-     } else {
-       result(nil);
      }
 }
 
