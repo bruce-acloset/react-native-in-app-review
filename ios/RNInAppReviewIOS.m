@@ -19,7 +19,7 @@ RCT_EXPORT_MODULE()
   };
   } else {
       // Fallback on earlier versions
-      return @(NO)
+      return @(NO);
   }
 }
 
